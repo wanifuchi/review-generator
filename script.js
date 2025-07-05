@@ -11,7 +11,6 @@ const tagGrid = document.getElementById('tagGrid');
 const generateButton = document.getElementById('generateAI');
 const commentTextarea = document.getElementById('comment');
 const submitButton = document.getElementById('submitReview');
-const googleButton = document.getElementById('googleReview');
 const toast = document.getElementById('toast');
 
 // 初期化
@@ -23,22 +22,19 @@ document.addEventListener('DOMContentLoaded', function() {
 // イベントリスナーの初期化
 function initializeEventListeners() {
     // 星評価のクリック
-    starRating.addEventListener('click', handleStarClick);
+    if (starRating) starRating.addEventListener('click', handleStarClick);
     
     // タグボタンのクリック
-    tagGrid.addEventListener('click', handleTagClick);
+    if (tagGrid) tagGrid.addEventListener('click', handleTagClick);
     
     // AI生成ボタンのクリック
-    generateButton.addEventListener('click', handleGenerateAI);
+    if (generateButton) generateButton.addEventListener('click', handleGenerateAI);
     
     // コメント入力の監視
-    commentTextarea.addEventListener('input', handleCommentChange);
+    if (commentTextarea) commentTextarea.addEventListener('input', handleCommentChange);
     
     // メール送信ボタンのクリック
-    submitButton.addEventListener('click', handleSubmitReview);
-    
-    // Google口コミボタンのクリック
-    googleButton.addEventListener('click', handleGoogleReview);
+    if (submitButton) submitButton.addEventListener('click', handleSubmitReview);
 }
 
 // 星評価のクリック処理
@@ -282,9 +278,11 @@ function generateVariables(rating, tags) {
 
 // プレースホルダー置換
 function replacePlaceholders(text, variables) {
+    if (typeof text !== 'string') return '';
+    
     let result = text;
     Object.entries(variables).forEach(([key, value]) => {
-        if (value) {
+        if (value && typeof value === 'string') {
             result = result.replace(new RegExp(`#{${key}}`, 'g'), value);
         }
     });
@@ -380,13 +378,10 @@ async function copyToClipboard(text) {
 // ボタン状態の更新
 function updateButtonStates() {
     // AI生成ボタンの状態
-    generateButton.disabled = !canGenerateAI();
+    if (generateButton) generateButton.disabled = !canGenerateAI();
     
     // 送信ボタンの状態
-    submitButton.disabled = !canSubmitReview();
-    
-    // Google口コミボタンの状態
-    googleButton.disabled = state.comment.trim() === '';
+    if (submitButton) submitButton.disabled = !canSubmitReview();
 }
 
 // AI生成可能かチェック
