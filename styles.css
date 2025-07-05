@@ -1,0 +1,331 @@
+/* リセットCSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro', 'Yu Gothic Medium', '游ゴシック Medium', YuGothic, '游ゴシック体', 'Meiryo', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ヘッダー */
+.header {
+    margin-bottom: 30px;
+}
+
+.image-banner {
+    text-align: center;
+    margin-bottom: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.image-banner img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.header-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c5282;
+    margin-top: 10px;
+}
+
+/* メインコンテンツ */
+.main-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.description-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border-left: 4px solid #2196F3;
+}
+
+.description-section p {
+    margin: 0;
+    line-height: 1.8;
+    color: #333;
+    font-size: 14px;
+}
+
+.description-section strong {
+    color: #2196F3;
+    font-weight: bold;
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+}
+
+/* 星評価 */
+.star-rating {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.star {
+    font-size: 40px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    user-select: none;
+}
+
+.star:hover,
+.star.active {
+    color: #ffd700;
+}
+
+.star.active {
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* タググリッド */
+.tag-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.tag-button {
+    padding: 12px 16px;
+    border: 2px solid #4CAF50;
+    background: white;
+    color: #4CAF50;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.tag-button:hover {
+    background: #f0f8f0;
+    transform: translateY(-2px);
+}
+
+.tag-button.selected {
+    background: #4CAF50;
+    color: white;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* ボタン */
+.generate-button {
+    padding: 15px 30px;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 10px auto;
+    display: block;
+}
+
+.generate-button:hover:not(:disabled) {
+    background: #1976D2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.generate-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* テキストエリア */
+.comment-textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+}
+
+.comment-textarea:focus {
+    outline: none;
+    border-color: #2196F3;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* ボタングループ */
+.button-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.submit-button,
+.google-button {
+    flex: 1;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 140px;
+}
+
+.submit-button {
+    background: #4CAF50;
+    color: white;
+}
+
+.submit-button:hover:not(:disabled) {
+    background: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.google-button {
+    background: #DB4437;
+    color: white;
+}
+
+.google-button:hover:not(:disabled) {
+    background: #c23321;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(219, 68, 55, 0.3);
+}
+
+.submit-button:disabled,
+.google-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* トースト */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4CAF50;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .main-content {
+        padding: 20px;
+    }
+    
+    .header-text {
+        font-size: 18px;
+    }
+    
+    .image-banner {
+        padding: 15px;
+    }
+    
+    .star {
+        font-size: 35px;
+    }
+    
+    .tag-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .submit-button,
+    .google-button {
+        width: 100%;
+        min-width: unset;
+    }
+}
+
+/* ローディング状態 */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #fff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
