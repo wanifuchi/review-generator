@@ -254,21 +254,21 @@ function replacePlaceholders(text, variables) {
     return result;
 }
 
-// Google口コミページを開く（複数URL対応）
+// Google口コミページを開く（Place ID使用）
 function openGoogleReviewPage() {
-    // 複数のGoogle口コミURL形式を試行
+    // とね屋のPlace IDを使用した直接的な口コミ投稿URL
     const reviewUrls = [
-        // 1. 会社名での検索（口コミタブ付き） - 最も確実
-        'https://www.google.com/search?q=%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B+%E3%82%AF%E3%83%81%E3%82%B3%E3%83%9F&hl=ja',
+        // 1. 直接口コミ投稿ページ（Place ID使用） - 最も確実
+        'https://search.google.com/local/writereview?placeid=ChIJ9U9MIzVtUzURhoC_ot0YT20',
         
-        // 2. Google Maps 検索
-        'https://www.google.com/maps/search/%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B/',
+        // 2. Google Maps での口コミ投稿（Place ID使用）
+        'https://www.google.com/maps/place/?q=place_id:ChIJ9U9MIzVtUzURhoC_ot0YT20&action=write-review',
         
-        // 3. 一般的な検索
-        'https://www.google.com/search?q=%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B'
+        // 3. 会社名での検索（フォールバック）
+        'https://www.google.com/search?q=%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B+%E3%82%AF%E3%83%81%E3%82%B3%E3%83%9F&hl=ja'
     ];
     
-    // 最初のURLを開く（最も確実性が高い）
+    // 最初のURLを開く（直接口コミ投稿ページ）
     const targetUrl = reviewUrls[0];
     
     try {
@@ -281,7 +281,7 @@ function openGoogleReviewPage() {
             window.location.href = targetUrl;
         }
         
-        console.log('とね屋のGoogle口コミページを開きました:', targetUrl);
+        console.log('とね屋のGoogle口コミ投稿ページを開きました:', targetUrl);
         
     } catch (error) {
         console.error('Google口コミページを開けませんでした:', error);

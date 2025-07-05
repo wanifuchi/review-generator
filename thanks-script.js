@@ -75,8 +75,8 @@ function goToGoogle() {
     // クリップボードにコピー
     copyToClipboard(reviewText);
     
-    // Google口コミページを開く
-    const googleUrl = 'https://www.google.com/search?q=株式会社とね屋+クチコミ&hl=ja';
+    // Google口コミページを開く（Place ID使用）
+    const googleUrl = 'https://search.google.com/local/writereview?placeid=ChIJ9U9MIzVtUzURhoC_ot0YT20';
     window.open(googleUrl, '_blank');
     
     // 成功メッセージ
