@@ -369,7 +369,15 @@ async function sendEmail(emailData) {
         
     } catch (error) {
         console.error('❌ メール送信エラー:', error);
-        throw new Error(`メール送信に失敗しました: ${error.message}`);
+        
+        // フォールバック: コンソールにメール内容を出力
+        console.log('📧 メール内容（送信されませんでした）:');
+        console.log('宛先:', emailData.to);
+        console.log('件名:', emailData.subject);
+        console.log('本文:', emailData.body);
+        
+        // エラーを投げずに続行（Thanks ページには遷移する）
+        return { success: false, message: 'メール設定が未完了です' };
     }
 }
 
