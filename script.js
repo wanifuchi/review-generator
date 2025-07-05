@@ -289,6 +289,45 @@ function replacePlaceholders(text, variables) {
     return result;
 }
 
+// Google口コミページを開く（複数URL対応）
+function openGoogleReviewPage() {
+    // 株式会社とね屋のPlace ID
+    const placeId = 'ChIJd7Xr_jlvGGARVQv1VUUc_Fw';
+    
+    // 複数のGoogle口コミURL形式を試行
+    const reviewUrls = [
+        // 1. Google Local Review (最も確実)
+        `https://search.google.com/local/writereview?placeid=${placeId}`,
+        
+        // 2. Google Maps Review (モバイル対応)
+        `https://www.google.com/maps/place/?q=place_id:${placeId}&hl=ja&gl=JP`,
+        
+        // 3. フォールバック：会社名での検索
+        'https://www.google.com/search?q=%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B+%E3%82%AF%E3%83%81%E3%82%B3%E3%83%9F'
+    ];
+    
+    // 最初のURLを開く（最も確実性が高い）
+    const targetUrl = reviewUrls[0];
+    
+    try {
+        // 新しいタブで開く
+        const newWindow = window.open(targetUrl, '_blank');
+        
+        // ポップアップブロック対策
+        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+            // ポップアップがブロックされた場合の代替手段
+            window.location.href = targetUrl;
+        }
+        
+        console.log('Google口コミページを開きました:', targetUrl);
+        
+    } catch (error) {
+        console.error('Google口コミページを開けませんでした:', error);
+        // エラー時は検索ページにフォールバック
+        window.open(reviewUrls[2], '_blank');
+    }
+}
+
 // コメント入力の処理
 function handleCommentChange(event) {
     state.comment = event.target.value;
@@ -326,8 +365,8 @@ async function handleSubmitReview() {
         await copyToClipboard(state.comment);
         
         // 3. Google口コミページに遷移
-        const googleReviewUrl = 'https://www.google.com/search?sca_esv=418cdb293b325d1a&rlz=1C5CHFA_enJP826JP826&sxsrf=AE3TifPwqsq44pOe8lq0bsk7cF5-wy63FA:1751678031627&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E-bon1uLocYfth86TkcXj95cysoHw6kJRrcQORWR0LYJD3BZnt6rOcBMhgej4mO3NzIOY1DC84POj9_77o0uPmKtCW6ny8DnfQpSXfFOHUshbM9FyQ%3D%3D&q=%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B+%E3%82%AF%E3%83%81%E3%82%B3%E3%83%9F&sa=X&ved=2ahUKEwii69eWxaSOAxXvafUHHQziAgIQ0bkNegQILBAE&biw=1470&bih=797&dpr=2';
-        window.open(googleReviewUrl, '_blank');
+        // 株式会社とね屋のGoogleマップ口コミ投稿ページに直接リンク
+        openGoogleReviewPage();
         
         // 4. 成功メッセージ
         showToast('メール送信完了！Google口コミページを開きました。口コミ内容はクリップボードにコピー済みです。');
