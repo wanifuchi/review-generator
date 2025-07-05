@@ -1,4 +1,6 @@
 // Vercel Function for email sending
+import sgMail from '@sendgrid/mail';
+
 export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,24 +19,27 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { to, subject, body } = req.body;
-
-  // Validation
-  if (!to || !subject || !body) {
-    res.status(400).json({ error: 'Missing required fields: to, subject, body' });
-    return;
-  }
-
-  // Email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(to)) {
-    res.status(400).json({ error: 'Invalid email address' });
-    return;
-  }
-
   try {
-    // Using SendGrid for email sending
-    const sgMail = require('@sendgrid/mail');
+    const { to, subject, body } = req.body;
+
+    // Validation
+    if (!to || !subject || !body) {
+      return res.status(400).json({ error: 'Missing required fields: to, subject, body' });
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(to)) {
+      return res.status(400).json({ error: 'Invalid email address' });
+    }
+
+    // Check environment variables
+    if (!process.env.SENDGRID_API_KEY) {
+      console.error('SENDGRID_API_KEY not found');
+      return res.status(500).json({ error: 'Server configuration error' });
+    }
+
+    // Initialize SendGrid
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
     const msg = {
@@ -74,7 +79,8 @@ export default async function handler(req, res) {
       `
     };
 
-    await sgMail.send(msg);
+    const result = await sgMail.send(msg);
+    console.log('SendGrid result:', result);
 
     res.status(200).json({
       success: true,
@@ -84,9 +90,16 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Email sending error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      response: error.response?.body
+    });
+    
     res.status(500).json({
       error: 'メール送信に失敗しました',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      details: error.message,
+      code: error.code
     });
   }
 }
