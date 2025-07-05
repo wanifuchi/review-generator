@@ -1,7 +1,7 @@
 // 環境設定
 window.APP_CONFIG = {
-  // 本番環境のAPIエンドポイント（Railwayデプロイ後に更新）
-  API_URL: 'https://your-railway-app.railway.app',
+  // 本番環境のAPIエンドポイント（Railway）
+  API_URL: 'https://review-generator-production.up.railway.app',
   
   // 開発環境設定
   DEV_API_URL: 'http://localhost:3001',
