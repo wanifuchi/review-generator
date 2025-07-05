@@ -1,0 +1,15 @@
+{
+    "name": "toneya-review-system",
+    "description": "とね屋口コミ生成システム",
+    "type": "project",
+    "require": {
+        "phpmailer/phpmailer": "^6.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

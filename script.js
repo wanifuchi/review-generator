@@ -256,16 +256,16 @@ function replacePlaceholders(text, variables) {
 
 // Google口コミページを開く（Place ID使用）
 function openGoogleReviewPage() {
-    // 株式会社とね屋の正しいPlace IDを使用した直接的な口コミ投稿URL
+    // 株式会社とね屋の口コミページ（検索ベース - より確実）
     const reviewUrls = [
-        // 1. 直接口コミ投稿ページ（株式会社とね屋のPlace ID使用） - 最も確実
-        'https://search.google.com/local/writereview?placeid=ChIJ9U9MIzVtUzURhoC_ot0YT20',
+        // 1. Google Maps検索（最も確実）
+        'https://www.google.com/maps/search/%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B/',
         
-        // 2. Google Maps での口コミ投稿（株式会社とね屋のPlace ID使用）
-        'https://www.google.com/maps/place/?q=place_id:ChIJ9U9MIzVtUzURhoC_ot0YT20&action=write-review',
+        // 2. 一般検索でのレビュー表示
+        'https://www.google.com/search?q=%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B+%E3%82%AF%E3%83%81%E3%82%B3%E3%83%9F&hl=ja',
         
-        // 3. 株式会社とね屋での検索（フォールバック）
-        'https://www.google.com/search?q=%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B+%E3%82%AF%E3%83%81%E3%82%B3%E3%83%9F&hl=ja'
+        // 3. レビューサイトへの誘導
+        'https://www.google.com/search?q=%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B+%E8%91%AC%E5%84%80%E7%A4%BE+%E5%8F%A3%E3%82%B3%E3%83%9F&hl=ja'
     ];
     
     // 最初のURLを開く（直接口コミ投稿ページ）
@@ -346,11 +346,11 @@ async function handleSubmitReview() {
     }
 }
 
-// メール送信（Vercel Functions使用）
+// メール送信（PHP使用）
 async function sendEmail(emailData) {
     try {
-        // Vercel Functions のエンドポイントを使用
-        const response = await fetch('/api/send-email', {
+        // 同じディレクトリのPHPファイルを使用
+        const response = await fetch('send_email.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

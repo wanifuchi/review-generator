@@ -75,8 +75,8 @@ function goToGoogle() {
     // クリップボードにコピー
     copyToClipboard(reviewText);
     
-    // Google口コミページを開く（株式会社とね屋のPlace ID使用）
-    const googleUrl = 'https://search.google.com/local/writereview?placeid=ChIJ9U9MIzVtUzURhoC_ot0YT20';
+    // Google口コミページを開く（株式会社とね屋の検索ベース）
+    const googleUrl = 'https://www.google.com/maps/search/%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B/';
     window.open(googleUrl, '_blank');
     
     // 成功メッセージ
