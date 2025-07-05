@@ -1,15 +1,15 @@
-# となりや葬儀社 口コミ生成ツール
+# とね屋 口コミ生成ツール
 
 ## 概要
-このプロジェクトは、となりや葬儀社の口コミを簡単に生成できるWebアプリケーションです。ユーザーは星評価と関連するサービスタグを選択し、AIによって自動的に人間らしい自然な口コミテキストを生成できます。
+このプロジェクトは、とね屋の口コミを簡単に生成できるWebアプリケーションです。ユーザーは星評価と関連するサービスタグを選択し、AIによって自動的に人間らしい自然な口コミテキストを生成できます。
 
-## 🚀 新機能：Gemini AI連携
-**Gemini APIを通じてGoogle AIと連携し、無料で人間が実際に書いたような自然で一貫性のある口コミを生成できます。**
+## 🚀 新機能：OpenAI連携
+**OpenAI GPT-4と連携し、人間が実際に書いたような自然で一貫性のある口コミを生成できます。**
 
 ### 🏗️ アーキテクチャ
 - **フロントエンド**: Vercel（静的サイト）
 - **バックエンド**: Railway（Node.js + Express）
-- **AI**: Google Gemini Pro API（バックエンドで安全に管理）
+- **AI**: OpenAI GPT-4（バックエンドで安全に管理）
 
 ## 主な機能
 
@@ -37,7 +37,7 @@
 
 ### 4. 📧 統合された投稿機能
 - 口コミ投稿ボタン一つで以下を実行：
-  - メール送信（feedback@toneya-sougi.co.jp）
+  - メール送信（info@toneya.co.jp）
   - クリップボードへの自動コピー
   - Google口コミページへの自動遷移
   - 成功通知
@@ -48,7 +48,7 @@
 - [GitHub](https://github.com/) アカウント
 - [Vercel](https://vercel.com/) アカウント
 - [Railway](https://railway.app/) アカウント
-- [Google AI Studio](https://aistudio.google.com/) アカウントとGemini APIキー
+- [OpenAI Platform](https://platform.openai.com/) アカウントとOpenAI APIキー
 
 ### 1. バックエンドデプロイ（Railway）
 
@@ -59,7 +59,7 @@
 
 2. **環境変数設定**
    ```bash
-   GEMINI_API_KEY=your_gemini_api_key_here
+   OPENAI_API_KEY=your_openai_api_key_here
    NODE_ENV=production
    PORT=3001
    FRONTEND_URL=https://your-vercel-app.vercel.app
@@ -87,7 +87,7 @@
 
 - **フロントエンド**: HTML5, CSS3, Vanilla JavaScript
 - **バックエンド**: Node.js, Express
-- **AI**: Google Gemini Pro API
+- **AI**: OpenAI GPT-4
 - **デプロイ**: Vercel + Railway
 
 ## ライセンス

@@ -81,7 +81,7 @@ app.post('/api/generate-review', async (req, res) => {
       messages: [
         {
           role: 'system',
-          content: `あなたは、となりや葬儀社のサービスを実際に利用した家族の一員です。大切な人を亡くした悲しみの中で体験したリアルな感情と出来事を、心を込めて書いています。
+          content: `あなたは、とね屋のサービスを実際に利用した家族の一員です。大切な人を亡くした悲しみの中で体験したリアルな感情と出来事を、心を込めて書いています。
 
 【絶対に守るべきルール】
 1. **完全に人間らしい文章**: AIが書いたと絶対にバレてはいけません
@@ -232,7 +232,7 @@ function createReviewPrompt(rating, tags) {
     serviceDetails[mainTag][serviceLevel] : 'サービス全般';
 
   return `【シチュエーション】
-大切な家族を亡くし、となりや葬儀社に${tagsText}をお願いした遺族の立場
+大切な家族を亡くし、とね屋に${tagsText}をお願いした遺族の立場
 
 【あなたの心境】
 ${context.emotion}という状況で、${context.tone}の気持ち

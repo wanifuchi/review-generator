@@ -256,7 +256,7 @@ function replacePlaceholders(text, variables) {
 
 // Google口コミページを開く（複数URL対応）
 function openGoogleReviewPage() {
-    // 株式会社とね屋のPlace ID
+    // とね屋のPlace ID
     const placeId = 'ChIJd7Xr_jlvGGARVQv1VUUc_Fw';
     
     // 複数のGoogle口コミURL形式を試行
@@ -268,7 +268,7 @@ function openGoogleReviewPage() {
         `https://www.google.com/maps/place/?q=place_id:${placeId}&hl=ja&gl=JP`,
         
         // 3. フォールバック：会社名での検索
-        'https://www.google.com/search?q=%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B+%E3%82%AF%E3%83%81%E3%82%B3%E3%83%9F'
+        'https://www.google.com/search?q=%E3%81%A8%E3%81%AD%E5%B1%8B+%E3%82%AF%E3%83%81%E3%82%B3%E3%83%9F'
     ];
     
     // 最初のURLを開く（最も確実性が高い）
@@ -284,7 +284,7 @@ function openGoogleReviewPage() {
             window.location.href = targetUrl;
         }
         
-        console.log('Google口コミページを開きました:', targetUrl);
+        console.log('とね屋のGoogle口コミページを開きました:', targetUrl);
         
     } catch (error) {
         console.error('Google口コミページを開けませんでした:', error);
@@ -321,7 +321,7 @@ async function handleSubmitReview() {
     try {
         // 1. メール送信
         await sendEmail({
-            to: 'feedback@toneya-sougi.co.jp',
+            to: 'info@toneya.co.jp',
             subject: `新しい口コミ - ${state.rating}★`,
             body: `評価: ${state.rating}つ星\nタグ: ${state.tags.join(', ')}\n\n口コミ内容:\n${state.comment}`
         });

@@ -7,7 +7,7 @@ window.APP_CONFIG = {
   DEV_API_URL: 'http://localhost:3001',
   
   // アプリケーション設定
-  APP_NAME: 'となりや葬儀社 口コミ生成ツール',
+  APP_NAME: 'とね屋 口コミ生成ツール',
   VERSION: '2.0.0',
   
   // 機能フラグ
