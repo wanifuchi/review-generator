@@ -24,14 +24,16 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-// Rate limiting
+// Rate limiting - 開発・テスト用に緩和
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15分
-  max: 100, // 1IP当たり15分で100リクエストまで
+  windowMs: 1 * 60 * 1000, // 1分
+  max: 30, // 1IP当たり1分で30リクエストまで
   message: {
     error: 'Too many requests, please try again later.',
-    retryAfter: '15 minutes'
-  }
+    retryAfter: '1 minute'
+  },
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 app.use('/api/', limiter);
 
