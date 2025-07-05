@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>とね屋 口コミ生成ツール</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="image-banner">
+                <img src="logo.png" alt="とね屋" />
+                <div class="header-text">口コミ生成ツール</div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="description-section">
+                <p>この度はご利用いただきありがとうございました。<br>
+                私たちは今後もお客様により良いサービスをご提供できるように日々努力を続けております。<br>
+                その一環として、ご利用いただいた皆様を対象にアンケートのご協力をお願いしております。<br>
+                <strong>ご利用いただいた感想</strong>をご記入頂ければ幸いです。<br>
+                ご協力よろしくお願いします。</p>
+            </div>
+            
+            <form id="reviewForm" class="review-form">
+                <div class="form-section">
+                    <label class="form-label">STEP1: 評価を選択してください（1：最低評価 ～ 5：最高評価）</label>
+                    <div class="star-rating" id="starRating">
+                        <span class="star" data-rating="1">★</span>
+                        <span class="star" data-rating="2">★</span>
+                        <span class="star" data-rating="3">★</span>
+                        <span class="star" data-rating="4">★</span>
+                        <span class="star" data-rating="5">★</span>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <label class="form-label">STEP2: 該当するサービスを選択してください（複数選択可）</label>
+                    <div class="tag-grid" id="tagGrid">
+                        <button type="button" class="tag-button" data-tag="斎場">斎場</button>
+                        <button type="button" class="tag-button" data-tag="家族葬">家族葬</button>
+                        <button type="button" class="tag-button" data-tag="海洋散骨">海洋散骨</button>
+                        <button type="button" class="tag-button" data-tag="墓じまい">墓じまい</button>
+                        <button type="button" class="tag-button" data-tag="永代供養">永代供養</button>
+                        <button type="button" class="tag-button" data-tag="樹木葬">樹木葬</button>
+                        <button type="button" class="tag-button" data-tag="遺品整理">遺品整理</button>
+                        <button type="button" class="tag-button" data-tag="終活相談">終活相談</button>
+                        <button type="button" class="tag-button" data-tag="献花納棺">献花納棺</button>
+                        <button type="button" class="tag-button" data-tag="別れの儀">別れの儀</button>
+                        <button type="button" class="tag-button" data-tag="感動">感動</button>
+                        <button type="button" class="tag-button" data-tag="スタッフの対応">スタッフの対応</button>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <button type="button" id="generateAI" class="generate-button" disabled>AI口コミ生成</button>
+                </div>
+
+                <div class="form-section">
+                    <label class="form-label">生成された口コミ（編集可能）</label>
+                    <textarea id="comment" class="comment-textarea" rows="6" placeholder="AI生成ボタンを押すと口コミが生成されます"></textarea>
+                </div>
+
+                <div class="form-section">
+                    <button type="button" id="submitReview" class="submit-button" disabled>口コミを投稿</button>
+                </div>
+            </form>
+        </main>
+
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
