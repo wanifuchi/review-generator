@@ -88,13 +88,13 @@ function goBack() {
     if (window.history.length > 1) {
         window.history.back();
     } else {
-        window.location.href = 'index.php';
+        window.location.href = 'index.html';
     }
 }
 
 // ホームボタン
 function goHome() {
-    window.location.href = 'index.php';
+    window.location.href = 'index.html';
 }
 
 // クリップボードにコピー

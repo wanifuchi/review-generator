@@ -331,7 +331,7 @@ async function handleSubmitReview() {
         localStorage.setItem('lastRating', state.rating);
         
         // 4. Thanks ページに遷移
-        window.location.href = `thanks.php?review=${encodeURIComponent(state.comment)}&rating=${state.rating}`;
+        window.location.href = `thanks.html?review=${encodeURIComponent(state.comment)}&rating=${state.rating}`;
         
         // 5. フォームをリセット（遷移前なので実質的には不要だが、念のため）
         resetForm();
@@ -346,11 +346,11 @@ async function handleSubmitReview() {
     }
 }
 
-// メール送信（PHP使用）
+// メール送信（Vercel Functions使用）
 async function sendEmail(emailData) {
     try {
-        // 同じディレクトリのPHPファイルを使用
-        const response = await fetch('send_email.php', {
+        // Vercel Functions のエンドポイントを使用
+        const response = await fetch('/api/send-email', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

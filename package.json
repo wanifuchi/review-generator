@@ -1,0 +1,25 @@
+{
+  "name": "toneya-review-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Toneya Funeral Home Review Generator",
+  "main": "index.php",
+  "scripts": {
+    "dev": "php -S localhost:8000",
+    "build": "echo 'Build complete'",
+    "start": "echo 'Start complete'"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "review",
+    "generator",
+    "vercel",
+    "sendgrid"
+  ],
+  "author": "Claude Code",
+  "license": "MIT"
+}
