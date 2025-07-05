@@ -364,7 +364,9 @@ async function sendEmail(emailData) {
         }
         
         const data = await response.json();
-        console.log('✅ メール送信成功:', data.message);
+        console.log('✅ メール送信成功:', data);
+        console.log('送信先:', data.to);
+        console.log('送信者:', data.from);
         return data;
         
     } catch (error) {

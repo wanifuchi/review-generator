@@ -2,6 +2,15 @@
 import sgMail from '@sendgrid/mail';
 
 export default async function handler(req, res) {
+  console.log('=== Email Function Called ===');
+  console.log('Method:', req.method);
+  console.log('Headers:', req.headers);
+  console.log('Environment check:', {
+    hasApiKey: !!process.env.SENDGRID_API_KEY,
+    apiKeyLength: process.env.SENDGRID_API_KEY?.length,
+    fromEmail: process.env.FROM_EMAIL
+  });
+
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -9,17 +18,20 @@ export default async function handler(req, res) {
 
   // Handle preflight request
   if (req.method === 'OPTIONS') {
+    console.log('OPTIONS request handled');
     res.status(200).end();
     return;
   }
 
   // Only allow POST requests
   if (req.method !== 'POST') {
+    console.log('Method not allowed:', req.method);
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
 
   try {
+    console.log('Request body:', req.body);
     const { to, subject, body } = req.body;
 
     // Validation
@@ -40,11 +52,16 @@ export default async function handler(req, res) {
     }
 
     // Initialize SendGrid
+    console.log('Initializing SendGrid...');
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    console.log('SendGrid API key set successfully');
+
+    const fromEmail = process.env.FROM_EMAIL || 'noreply@toneya-review.vercel.app';
+    console.log('Using FROM email:', fromEmail);
 
     const msg = {
       to: to,
-      from: process.env.FROM_EMAIL || 'noreply@toneya-review.vercel.app',
+      from: fromEmail,
       subject: subject,
       html: `
         <!DOCTYPE html>
@@ -79,13 +96,23 @@ export default async function handler(req, res) {
       `
     };
 
+    console.log('Sending email with message:', {
+      to: msg.to,
+      from: msg.from,
+      subject: msg.subject,
+      bodyLength: msg.html.length
+    });
+
     const result = await sgMail.send(msg);
-    console.log('SendGrid result:', result);
+    console.log('SendGrid send result:', result);
+    console.log('Email sent successfully!');
 
     res.status(200).json({
       success: true,
       message: 'メールが正常に送信されました',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      to: to,
+      from: fromEmail
     });
 
   } catch (error) {
