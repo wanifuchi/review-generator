@@ -326,17 +326,14 @@ async function handleSubmitReview() {
         // 2. クリップボードにコピー
         const copySuccess = await copyToClipboard(state.comment);
         
-        // 3. Google口コミページに遷移
-        // 株式会社とね屋のGoogleマップ口コミ投稿ページに直接リンク
-        openGoogleReviewPage();
+        // 3. ローカルストレージに保存
+        localStorage.setItem('lastGeneratedReview', state.comment);
+        localStorage.setItem('lastRating', state.rating);
         
-        // 4. 成功メッセージ
-        const copyMessage = copySuccess ? 
-            'メール送信完了！Google口コミページを開きました。口コミ内容はクリップボードにコピー済みです。' :
-            'メール送信完了！Google口コミページを開きました。手動で口コミをコピーしてください。';
-        showToast(copyMessage);
+        // 4. Thanks ページに遷移
+        window.location.href = `thanks.html?review=${encodeURIComponent(state.comment)}&rating=${state.rating}`;
         
-        // 5. フォームをリセット
+        // 5. フォームをリセット（遷移前なので実質的には不要だが、念のため）
         resetForm();
         
     } catch (error) {
