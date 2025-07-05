@@ -24,18 +24,18 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-// Rate limiting - 開発・テスト用に緩和
-const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1分
-  max: 30, // 1IP当たり1分で30リクエストまで
-  message: {
-    error: 'Too many requests, please try again later.',
-    retryAfter: '1 minute'
-  },
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
-app.use('/api/', limiter);
+// Rate limiting - テスト用に一時無効化
+// const limiter = rateLimit({
+//   windowMs: 1 * 60 * 1000, // 1分
+//   max: 30, // 1IP当たり1分で30リクエストまで
+//   message: {
+//     error: 'Too many requests, please try again later.',
+//     retryAfter: '1 minute'
+//   },
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
+// app.use('/api/', limiter);
 
 // JSON解析
 app.use(express.json({ limit: '10mb' }));
