@@ -118,24 +118,42 @@ ${prompt}
 
   } catch (error) {
     console.error('Review generation error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      status: error.status,
+      response: error.response?.data
+    });
 
-    if (error.message && error.message.includes('quota')) {
+    // Gemini API specific errors
+    if (error.message && (error.message.includes('quota') || error.message.includes('QUOTA'))) {
       return res.status(402).json({
         error: 'Gemini API quota exceeded. Please check your billing.',
-        code: 'quota_exceeded'
+        code: 'quota_exceeded',
+        details: error.message
       });
     }
 
-    if (error.message && error.message.includes('rate')) {
+    if (error.message && (error.message.includes('rate') || error.message.includes('RATE'))) {
       return res.status(429).json({
-        error: 'Rate limit exceeded. Please try again later.',
-        code: 'rate_limit'
+        error: 'Gemini API rate limit exceeded. Please try again later.',
+        code: 'rate_limit',
+        details: error.message
+      });
+    }
+
+    if (error.status === 429 || error.code === 429) {
+      return res.status(429).json({
+        error: 'API rate limit exceeded. Please try again later.',
+        code: 'rate_limit',
+        details: error.message
       });
     }
 
     res.status(500).json({
       error: 'Failed to generate review. Please try again.',
-      code: 'generation_failed'
+      code: 'generation_failed',
+      details: error.message
     });
   }
 });
