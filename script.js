@@ -163,118 +163,83 @@ function getAPIUrl() {
     return config?.DEV_API_URL || 'http://localhost:3001';
 }
 
-// 改良されたローカル生成（論理的一貫性を重視）
+// 大幅改良：人間らしい自然なローカル生成
 function generateReviewLocally(rating, tags) {
-    // 評価レベルに基づく基本テンプレート
-    const templates = {
-        1: {
-            start: ['この度はお世話になりました。', '先日利用させていただきました。'],
-            problem: '#{service}について、#{issue}という点で残念に思いました。',
-            result: '#{negative_result}',
-            conclusion: '今後の改善に期待しています。'
-        },
-        2: {
-            start: ['#{family}でお世話になりました。', '家族の大切な時にお世話になりました。'],
-            mixed: '#{service}については#{positive}でしたが、#{negative}という点が気になりました。',
-            result: '全体的には#{mixed_result}',
-            conclusion: 'もう少し改善されれば、より良いサービスになると思います。'
-        },
-        3: {
-            start: ['#{family}でお世話になりました。', 'この度はお世話になりました。'],
-            service: '#{service}について、#{neutral_experience}',
-            result: '#{neutral_result}',
-            conclusion: '必要な対応はしていただけました。'
-        },
-        4: {
-            start: ['#{family}で大変お世話になりました。', '家族の大切な時にお世話になりました。'],
-            positive: '#{service}では、#{positive_experience}',
-            gratitude: '#{positive_emotion}',
-            conclusion: 'ありがとうございました。また機会があればお願いしたいです。'
-        },
-        5: {
-            start: ['#{family}で本当にお世話になりました。', '家族の最も大切な時にお世話になりました。'],
-            excellent: '#{service}において、#{excellent_experience}',
-            emotion: '#{deep_gratitude}',
-            conclusion: '心から感謝しております。必ず知人にも紹介させていただきます。'
-        }
+    const realExperiences = {
+        1: [
+            '父の葬儀でお世話になりましたが、正直なところ期待していたサービスとは少し違いました。#{specific_issue}の件で戸惑うことが多く、もう少し丁寧な説明があれば良かったと思います。',
+            '#{family_relation}の葬儀を依頼しましたが、#{service_area}について想像していたものと違う部分がありました。大切な時だけに、もう少し配慮していただけたら良かったです。'
+        ],
+        2: [
+            '#{family_relation}の葬儀でお世話になりました。#{service_area}については基本的な対応はしていただけたのですが、#{minor_concern}という点で少し気になることがありました。全体的には可もなく不可もなくという印象です。',
+            '家族の葬儀を#{service_area}でお願いしました。スタッフの方は親切でしたが、#{small_issue}の部分でもう少し配慮があれば良かったかなと思います。'
+        ],
+        3: [
+            '#{family_relation}の葬儀でお世話になりました。#{service_area}については標準的な対応をしていただき、特に大きな問題もなく進めることができました。必要な手続きも滞りなく行っていただけました。',
+            '家族葬を#{service_area}でお願いしました。想定していた通りのサービスで、安心してお任せできました。特別すごいというわけではありませんが、必要十分な対応をしていただけたと思います。'
+        ],
+        4: [
+            '#{family_relation}の葬儀で大変お世話になりました。#{service_area}では、#{positive_detail}していただき、家族一同安心してお任せできました。思っていた以上に丁寧な対応で、本当に感謝しています。',
+            '大切な#{family_relation}の葬儀を#{service_area}でお願いしました。#{staff_kindness}など、細かいところまで気遣っていただき、悲しみの中でも心が温まりました。またお世話になることがあればお願いしたいです。'
+        ],
+        5: [
+            '#{family_relation}の葬儀で本当にお世話になりました。#{service_area}では#{exceptional_service}していただき、家族全員が心から感動しました。#{emotional_moment}の場面では涙が出そうになりました。心から感謝しており、必ず知人にもおすすめします。',
+            '大切な#{family_relation}を見送る葬儀を#{service_area}でお願いしました。#{outstanding_care}など、想像以上の心配りをしていただき、故人も安心して旅立てたと思います。本当にありがとうございました。'
+        ]
     };
-    
-    // 動的な要素を生成
-    const variables = generateVariables(rating, tags);
-    
-    // テンプレートを選択し、変数を置換
-    const template = templates[rating] || templates[3];
-    let review = '';
-    
-    Object.values(template).forEach(part => {
-        if (review) review += '';
-        review += replacePlaceholders(part, variables);
+
+    const variableOptions = {
+        family_relation: ['父', '母', '祖父', '祖母'],
+        service_area: {
+            '斎場': '斎場での式',
+            '家族葬': '家族葬',
+            '海洋散骨': '海洋散骨',
+            'スタッフの対応': 'サービス全般',
+            'default': 'サービス全般'
+        },
+        // 1-2星用（ネガティブ）
+        specific_issue: ['説明が分かりにくい', '手続きに時間がかかる', '連絡の行き違い'],
+        minor_concern: ['待ち時間が少し長かった', '説明がもう少し詳しければ良かった'],
+        small_issue: ['進行のタイミング', '費用の説明'],
+        // 4-5星用（ポジティブ）
+        positive_detail: ['事前に丁寧に説明', '細かい要望にも対応', '温かい声かけ'],
+        staff_kindness: ['スタッフの方の優しい声かけ', '気遣いのある対応'],
+        exceptional_service: ['想像以上に心のこもった対応を', '本当に丁寧な進行を'],
+        outstanding_care: ['事前の準備から当日まで完璧な段取り', 'スタッフ皆さんの温かい配慮'],
+        emotional_moment: ['最後のお別れの時', '式の進行中']
+    };
+
+    // ランダム選択関数
+    function randomChoice(array) {
+        return array[Math.floor(Math.random() * array.length)];
+    }
+
+    // 変数を生成
+    const variables = {};
+    Object.keys(variableOptions).forEach(key => {
+        if (Array.isArray(variableOptions[key])) {
+            variables[key] = randomChoice(variableOptions[key]);
+        } else if (typeof variableOptions[key] === 'object') {
+            const mainTag = tags[0] || 'default';
+            variables[key] = variableOptions[key][mainTag] || variableOptions[key]['default'];
+        }
     });
+
+    // テンプレート選択と生成
+    const templates = realExperiences[rating] || realExperiences[3];
+    const selectedTemplate = randomChoice(templates);
     
+    // 変数置換
+    let review = selectedTemplate;
+    Object.entries(variables).forEach(([key, value]) => {
+        if (value) {
+            review = review.replace(new RegExp(`#{${key}}`, 'g'), value);
+        }
+    });
+
     return review.trim();
 }
 
-// 変数生成（評価とタグに基づく）
-function generateVariables(rating, tags) {
-    const families = ['父の葬儀', '母の葬儀', '祖父の葬儀', '祖母の葬儀'];
-    const family = families[Math.floor(Math.random() * families.length)];
-    
-    // タグに基づくサービス記述
-    const serviceDescriptions = {
-        'スタッフの対応': {
-            high: 'スタッフの方々の温かい対応',
-            low: 'スタッフの対応'
-        },
-        '家族葬': {
-            high: '家族葬のプラン',
-            low: '家族葬'
-        },
-        '海洋散骨': {
-            high: '海洋散骨のサービス',
-            low: '海洋散骨'
-        },
-        '斎場': {
-            high: '斎場での式',
-            low: '斎場の利用'
-        }
-    };
-    
-    const mainTag = tags[0] || 'スタッフの対応';
-    const service = serviceDescriptions[mainTag] ? 
-        (rating >= 4 ? serviceDescriptions[mainTag].high : serviceDescriptions[mainTag].low) : 
-        'サービス';
-    
-    // 評価レベル別の体験記述
-    const experiences = {
-        1: {
-            issue: '説明が不十分だった',
-            negative_result: '不安が残る結果となりました。'
-        },
-        2: {
-            positive: '基本的な対応はしていただけました',
-            negative: '説明が分かりにくい部分がありました',
-            mixed_result: '可もなく不可もなくといった印象です。'
-        },
-        3: {
-            neutral_experience: '標準的な対応をしていただきました。',
-            neutral_result: '特に問題なく進めることができました。'
-        },
-        4: {
-            positive_experience: '期待以上の丁寧な対応をしていただきました',
-            positive_emotion: '安心してお任せすることができました。'
-        },
-        5: {
-            excellent_experience: '想像以上に心のこもった対応をしていただき',
-            deep_gratitude: '家族一同、深く感動いたしました。'
-        }
-    };
-    
-    return {
-        family,
-        service,
-        ...experiences[rating]
-    };
-}
 
 // プレースホルダー置換
 function replacePlaceholders(text, variables) {
