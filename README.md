@@ -1,7 +1,59 @@
-# とね屋 口コミ生成ツール
+# 🎋 とね屋口コミ生成システム - 完全版
 
-## 概要
-このプロジェクトは、とね屋の口コミを簡単に生成できるWebアプリケーションです。ユーザーは星評価と関連するサービスタグを選択し、AIによって自動的に人間らしい自然な口コミテキストを生成できます。
+## 📋 システム概要
+
+**星評価とタグ選択だけで、AI生成口コミをワンクリック送信**するPHPシステムです。
+
+### ✨ 主要機能
+- ⭐ **星評価選択**（1-5つ星）
+- 🏷️ **サービスタグ選択**（斎場・家族葬・海洋散骨・スタッフの対応）
+- 🤖 **AI口コミ自動生成**（50パターン以上の自然な文章）
+- 📧 **ワンクリックメール送信**（`info@toneya.co.jp` 宛）
+- 🎨 **美しいサンクスページ**
+- 📱 **Google口コミ誘導**（株式会社とね屋）
+
+## 🎯 ファイル構成
+
+```
+📁 toneya-review-system/
+├── 🚀 index.php              # メインページ（フォーム+PHP処理）
+├── 🎉 thanks.php             # サンクスページ  
+├── 🎨 styles.css             # メインページスタイル
+├── 🎨 thanks-styles.css      # サンクスページスタイル
+├── 🖼️ logo.png               # ロゴ画像
+├── ⚙️ config.php             # 設定ファイル
+├── 🤖 download_phpmailer.php # PHPMailer自動インストーラー
+├── 🛡️ .htaccess              # セキュリティ設定
+├── 📦 composer.json          # PHP依存関係
+├── 📚 README.md              # このファイル
+├── 📖 SETUP_MANUAL.md        # 詳細セットアップガイド
+└── 🚀 XSERVER_QUICK_SETUP.md # XSERVER用3分セットアップ
+```
+
+## ⚡ XSERVERクイックスタート
+
+### STEP 1: ファイルアップロード
+```
+XSERVER ファイルマネージャー → public_html → 全ファイルをアップロード
+```
+
+### STEP 2: PHPMailer インストール  
+```
+http://yourdomain.com/download_phpmailer.php にアクセス → 自動インストール
+```
+
+### STEP 3: Gmail設定
+```php
+// config.php を編集（3行だけ）
+define('MAIL_USERNAME', 'your-email@gmail.com');     // Gmail
+define('MAIL_PASSWORD', 'your-app-password');        // アプリパスワード  
+define('MAIL_FROM_EMAIL', 'your-email@gmail.com');   // 送信者
+```
+
+### STEP 4: 動作確認
+```
+http://yourdomain.com/index.php → テスト送信 → info@toneya.co.jp 受信確認
+```
 
 ## 🚀 新機能：OpenAI連携
 **OpenAI GPT-4と連携し、人間が実際に書いたような自然で一貫性のある口コミを生成できます。**
