@@ -256,16 +256,16 @@ function replacePlaceholders(text, variables) {
 
 // Google口コミページを開く（Place ID使用）
 function openGoogleReviewPage() {
-    // とね屋の正しいPlace IDを使用した直接的な口コミ投稿URL
+    // 株式会社とね屋の正しいPlace IDを使用した直接的な口コミ投稿URL
     const reviewUrls = [
-        // 1. 直接口コミ投稿ページ（正しいPlace ID使用） - 最も確実
-        'https://search.google.com/local/writereview?placeid=ChIJ9fRMIzVdNRsRNmT4qtK_gG0',
+        // 1. 直接口コミ投稿ページ（株式会社とね屋のPlace ID使用） - 最も確実
+        'https://search.google.com/local/writereview?placeid=ChIJ9U9MIzVtUzURhoC_ot0YT20',
         
-        // 2. Google Maps での口コミ投稿（正しいPlace ID使用）
-        'https://www.google.com/maps/place/?q=place_id:ChIJ9fRMIzVdNRsRNmT4qtK_gG0&action=write-review',
+        // 2. Google Maps での口コミ投稿（株式会社とね屋のPlace ID使用）
+        'https://www.google.com/maps/place/?q=place_id:ChIJ9U9MIzVtUzURhoC_ot0YT20&action=write-review',
         
-        // 3. 徳島葬送.COM家族葬ホール応神での検索（フォールバック）
-        'https://www.google.com/search?q=%E5%BE%B3%E5%B3%B6%E8%91%AC%E9%80%81.COM%E5%AE%B6%E6%97%8F%E8%91%AC%E3%83%9B%E3%83%BC%E3%83%AB%E5%BF%9C%E7%A5%9E+%E3%82%AF%E3%83%81%E3%82%B3%E3%83%9F&hl=ja'
+        // 3. 株式会社とね屋での検索（フォールバック）
+        'https://www.google.com/search?q=%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B+%E3%82%AF%E3%83%81%E3%82%B3%E3%83%9F&hl=ja'
     ];
     
     // 最初のURLを開く（直接口コミ投稿ページ）
@@ -281,7 +281,7 @@ function openGoogleReviewPage() {
             window.location.href = targetUrl;
         }
         
-        console.log('徳島葬送.COM家族葬ホール応神のGoogle口コミ投稿ページを開きました:', targetUrl);
+        console.log('株式会社とね屋のGoogle口コミ投稿ページを開きました:', targetUrl);
         
     } catch (error) {
         console.error('Google口コミページを開けませんでした:', error);
