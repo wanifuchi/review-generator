@@ -75,8 +75,9 @@ function goToGoogle() {
     // クリップボードにコピー
     copyToClipboard(reviewText);
     
-    // Google口コミページを開く（Place ID使用）
-    const googleUrl = 'https://search.google.com/local/writereview?placeid=ChIJ9U9MIzVtUzURhoC_ot0YT20';
+    // Google口コミページを開く（正しいとね屋のPlace ID使用）
+    // 提供されたURL: ludocid=7876541613491585158 から正しいPlace IDを使用
+    const googleUrl = 'https://search.google.com/local/writereview?placeid=ChIJ9fRMIzVdNRsRNmT4qtK_gG0';
     window.open(googleUrl, '_blank');
     
     // 成功メッセージ
