@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const OpenAI = require('openai');
 require('dotenv').config();
 
 const app = express();
@@ -40,9 +40,10 @@ app.use(cors(corsOptions));
 // JSON解析
 app.use(express.json({ limit: '10mb' }));
 
-// Gemini AI設定
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+// OpenAI設定
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 // ヘルスチェック
 app.get('/health', (req, res) => {
@@ -74,8 +75,13 @@ app.post('/api/generate-review', async (req, res) => {
     // プロンプト生成
     const prompt = createReviewPrompt(rating, tags);
 
-    // Gemini API呼び出し - 人間らしい自然な口コミ生成
-    const fullPrompt = `あなたは、となりや葬儀社のサービスを実際に利用した家族の一員です。大切な人を亡くした悲しみの中で体験したリアルな感情と出来事を、心を込めて書いています。
+    // OpenAI API呼び出し - 人間らしい自然な口コミ生成
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4',
+      messages: [
+        {
+          role: 'system',
+          content: `あなたは、となりや葬儀社のサービスを実際に利用した家族の一員です。大切な人を亡くした悲しみの中で体験したリアルな感情と出来事を、心を込めて書いています。
 
 【絶対に守るべきルール】
 1. **完全に人間らしい文章**: AIが書いたと絶対にバレてはいけません
@@ -96,13 +102,20 @@ app.post('/api/generate-review', async (req, res) => {
 - 機械的な定型文
 - 不自然に完璧な文章構造
 
-${prompt}
+実際の遺族が書いたような、心のこもった自然な口コミを生成してください。`
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      max_tokens: 400,
+      temperature: 0.8,
+      presence_penalty: 0.1,
+      frequency_penalty: 0.1
+    });
 
-上記の条件で、実際の遺族が書いたような、心のこもった自然な口コミを生成してください。`;
-
-    const result = await model.generateContent(fullPrompt);
-    const response = await result.response;
-    const generatedReview = response.text().trim();
+    const generatedReview = response.choices[0].message.content.trim();
 
     // レスポンス返却
     res.json({
@@ -111,7 +124,7 @@ ${prompt}
       metadata: {
         rating,
         tags,
-        model: 'gemini-pro',
+        model: 'gpt-4',
         timestamp: new Date().toISOString()
       }
     });
@@ -125,18 +138,18 @@ ${prompt}
       response: error.response?.data
     });
 
-    // Gemini API specific errors
-    if (error.message && (error.message.includes('quota') || error.message.includes('QUOTA'))) {
+    // OpenAI API specific errors
+    if (error.code === 'insufficient_quota') {
       return res.status(402).json({
-        error: 'Gemini API quota exceeded. Please check your billing.',
+        error: 'OpenAI API quota exceeded. Please check your billing.',
         code: 'quota_exceeded',
         details: error.message
       });
     }
 
-    if (error.message && (error.message.includes('rate') || error.message.includes('RATE'))) {
+    if (error.code === 'rate_limit_exceeded') {
       return res.status(429).json({
-        error: 'Gemini API rate limit exceeded. Please try again later.',
+        error: 'OpenAI API rate limit exceeded. Please try again later.',
         code: 'rate_limit',
         details: error.message
       });
