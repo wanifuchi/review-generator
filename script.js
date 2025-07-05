@@ -256,19 +256,16 @@ function replacePlaceholders(text, variables) {
 
 // Google口コミページを開く（複数URL対応）
 function openGoogleReviewPage() {
-    // とね屋のPlace ID
-    const placeId = 'ChIJd7Xr_jlvGGARVQv1VUUc_Fw';
-    
     // 複数のGoogle口コミURL形式を試行
     const reviewUrls = [
-        // 1. Google Local Review (最も確実)
-        `https://search.google.com/local/writereview?placeid=${placeId}`,
+        // 1. 会社名での検索（口コミタブ付き） - 最も確実
+        'https://www.google.com/search?q=%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B+%E3%82%AF%E3%83%81%E3%82%B3%E3%83%9F&hl=ja',
         
-        // 2. Google Maps Review (モバイル対応)
-        `https://www.google.com/maps/place/?q=place_id:${placeId}&hl=ja&gl=JP`,
+        // 2. Google Maps 検索
+        'https://www.google.com/maps/search/%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B/',
         
-        // 3. フォールバック：会社名での検索
-        'https://www.google.com/search?q=%E3%81%A8%E3%81%AD%E5%B1%8B+%E3%82%AF%E3%83%81%E3%82%B3%E3%83%9F'
+        // 3. 一般的な検索
+        'https://www.google.com/search?q=%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE%E3%81%A8%E3%81%AD%E5%B1%8B'
     ];
     
     // 最初のURLを開く（最も確実性が高い）
@@ -327,14 +324,17 @@ async function handleSubmitReview() {
         });
         
         // 2. クリップボードにコピー
-        await copyToClipboard(state.comment);
+        const copySuccess = await copyToClipboard(state.comment);
         
         // 3. Google口コミページに遷移
         // 株式会社とね屋のGoogleマップ口コミ投稿ページに直接リンク
         openGoogleReviewPage();
         
         // 4. 成功メッセージ
-        showToast('メール送信完了！Google口コミページを開きました。口コミ内容はクリップボードにコピー済みです。');
+        const copyMessage = copySuccess ? 
+            'メール送信完了！Google口コミページを開きました。口コミ内容はクリップボードにコピー済みです。' :
+            'メール送信完了！Google口コミページを開きました。手動で口コミをコピーしてください。';
+        showToast(copyMessage);
         
         // 5. フォームをリセット
         resetForm();
@@ -361,22 +361,43 @@ async function sendEmail(emailData) {
     // return emailjs.send('service_id', 'template_id', emailData);
 }
 
-// クリップボードにコピー
+// クリップボードにコピー（強化版）
 async function copyToClipboard(text) {
     try {
-        await navigator.clipboard.writeText(text);
-        return true;
+        // 最新のClipboard APIを試行
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            console.log('✅ Clipboard API でコピー成功:', text.substring(0, 50) + '...');
+            return true;
+        }
     } catch (error) {
-        console.error('クリップボードコピーエラー:', error);
-        // フォールバック
+        console.warn('Clipboard API失敗、フォールバックを試行:', error);
+    }
+    
+    try {
+        // フォールバック: 従来の方法
         const textArea = document.createElement('textarea');
         textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        textArea.style.top = '-9999px';
         document.body.appendChild(textArea);
+        textArea.focus();
         textArea.select();
-        document.execCommand('copy');
+        
+        const successful = document.execCommand('copy');
         document.body.removeChild(textArea);
-        return true;
+        
+        if (successful) {
+            console.log('✅ execCommand でコピー成功:', text.substring(0, 50) + '...');
+            return true;
+        }
+    } catch (error) {
+        console.error('フォールバックコピー失敗:', error);
     }
+    
+    console.error('❌ すべてのコピー方法が失敗');
+    return false;
 }
 
 // ボタン状態の更新
