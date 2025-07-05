@@ -346,16 +346,32 @@ async function handleSubmitReview() {
     }
 }
 
-// メール送信（ダミー実装）
+// メール送信（バックエンドAPI使用）
 async function sendEmail(emailData) {
-    // 実際の実装では、EmailJS やバックエンドAPIを使用
-    console.log('メール送信:', emailData);
-    
-    // ダミーの遅延
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // 実際の実装例（EmailJS使用）:
-    // return emailjs.send('service_id', 'template_id', emailData);
+    try {
+        const apiUrl = getAPIUrl();
+        
+        const response = await fetch(`${apiUrl}/api/send-email`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(emailData)
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('✅ メール送信成功:', data.message);
+        return data;
+        
+    } catch (error) {
+        console.error('❌ メール送信エラー:', error);
+        throw new Error(`メール送信に失敗しました: ${error.message}`);
+    }
 }
 
 // クリップボードにコピー（強化版）
